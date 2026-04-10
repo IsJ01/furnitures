@@ -30,8 +30,6 @@ databaseChangeLog:
               - column:
                   name: category_id
                   type: BIGINT
-                  constraints:
-                    nullable: false
               - column:
                   name: name
                   type: VARCHAR(255)
@@ -73,4 +71,8 @@ databaseChangeLog:
         - sql:
             sql: |
               ALTER TABLE categories ADD CONSTRAINT chk_category_name CHECK (TRIM(name) <> '');
+        - sql:
+            sql: |
+              ALTER TABLE furnitures ADD CONSTRAINT chk_furniture_name CHECK (TRIM(name) <> '');
+              ALTER TABLE furnitures ADD CONSTRAINT chk_furniture_material CHECK (TRIM(material) <> '');
 

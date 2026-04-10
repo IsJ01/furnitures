@@ -17,8 +17,7 @@ import com.cur.furniture.integrational.IntegrationalTestBase;
 
 public class CategoriesRepositoryTest extends IntegrationalTestBase {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    @Autowired private CategoryRepository categoryRepository;
 
     @BeforeEach
     void setUp() {
