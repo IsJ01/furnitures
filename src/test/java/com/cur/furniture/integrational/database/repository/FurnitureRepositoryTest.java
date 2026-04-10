@@ -28,7 +28,7 @@ public class FurnitureRepositoryTest extends IntegrationalTestBase {
     void setUp() {
         furnitureRepository.deleteAll();
         categoryRepository.deleteAll();
-        testCategory = new Category("Test category");
+        testCategory = new Category(null, "Test category");
         categoryRepository.saveAndFlush(testCategory);
     }
 

@@ -26,18 +26,19 @@ public class CategoriesRepositoryTest extends IntegrationalTestBase {
 
     @Test
     void testCreate() {
-        Category category = new Category("Диваны");
+        Category category = new Category(null, "Диваны");
         categoryRepository.saveAndFlush(category);
         Category retrievedCategory = categoryRepository.findById(category.getId()).orElseThrow();
+        assertThat(retrievedCategory.getParent()).isNull();
         assertThat(retrievedCategory.getName()).isEqualTo("Диваны");
     }
 
     @Test
     void testRepeatedCreate() {
-        categoryRepository.saveAndFlush(new Category("Диваны"));
+        categoryRepository.saveAndFlush(new Category(null, "Диваны"));
         assertThrows(
             DataIntegrityViolationException.class, 
-            () -> categoryRepository.saveAndFlush(new Category("Диваны"))
+            () -> categoryRepository.saveAndFlush(new Category(null, "Диваны"))
         );
     }
 
@@ -47,8 +48,21 @@ public class CategoriesRepositoryTest extends IntegrationalTestBase {
     void testCreateWithInvalidName(String name) {
         assertThrows(
             DataIntegrityViolationException.class, 
-            () -> categoryRepository.saveAndFlush(new Category(name))
+            () -> categoryRepository.saveAndFlush(new Category(null, name))
         );
+    }
+
+    @Test
+    void testCreateWithParent() {
+        Category category = new Category(null, "Корпусная мебель");
+        categoryRepository.saveAndFlush(category);
+
+        Category category2 = new Category(category, "Диваны");
+        categoryRepository.saveAndFlush(category2);
+
+        Category retrievedCategory = categoryRepository.findById(category2.getId()).orElseThrow();
+        assertThat(retrievedCategory.getParent()).isEqualTo(category);
+        assertThat(retrievedCategory.getName()).isEqualTo("Диваны");
     }
 
 }

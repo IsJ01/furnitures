@@ -13,6 +13,9 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
+                  name: parent_id
+                  type: BIGINT
+              - column:
                   name: name
                   type: VARCHAR(255)
                   constraints:
@@ -68,6 +71,12 @@ databaseChangeLog:
             referencedTableName: categories
             referencedColumnNames: id
             constraintName: fk_furniture_categories
+        - addForeignKeyConstraint:
+            baseTableName: categories
+            baseColumnNames: parent_id
+            referencedTableName: categories
+            referencedColumnNames: id
+            constraintName: fk_parents_categories
         - sql:
             sql: |
               ALTER TABLE categories ADD CONSTRAINT chk_category_name CHECK (TRIM(name) <> '');
@@ -75,4 +84,39 @@ databaseChangeLog:
             sql: |
               ALTER TABLE furnitures ADD CONSTRAINT chk_furniture_name CHECK (TRIM(name) <> '');
               ALTER TABLE furnitures ADD CONSTRAINT chk_furniture_material CHECK (TRIM(material) <> '');
+  - changeSet:
+      id: 3_insert_categories
+      author: "Safi"
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO categories (id, name, parent_id) VALUES
+              -- Корневые (level 1)
+              (1, 'Корпусная мебель', NULL),
+              (2, 'Мягкая мебель', NULL),
+              (3, 'Столы и стулья', NULL),
+              (4, 'Мебель для сна', NULL),
+              (5, 'Мебель для кухни', NULL),
+              (6, 'Мебель для прихожей', NULL),
+              (7, 'Детская мебель', NULL),
+              (8, 'Уличная мебель', NULL),
+
+              -- Подкатегории (level 2)
+              (9, 'Шкафы', 1),
+              (10, 'Комоды', 1),
+              (11, 'Тумбы', 1),
+              (12, 'Стеллажи', 1),
+              (13, 'Диваны', 2),
+              (14, 'Кресла', 2),
+              (15, 'Пуфы', 2),
+              (16, 'Столы', 3),
+              (17, 'Стулья', 3),
+              (18, 'Кровати', 4),
+              (19, 'Матрасы', 4),
+              (20, 'Кухонные гарнитуры', 5),
+              (21, 'Мебель для ванной', 5),
+              (22, 'Прихожие', 6),
+              (23, 'Обувницы', 6),
+              (24, 'Кроватки', 7),
+              (25, 'Парты и стулья детские', 7);
 
