@@ -7,3 +7,7 @@ databaseChangeLog:
       id: 2026-04-11-init-furnitures
       file: v-1.0/2026-04-11-init-furnitures.yaml
       relativeToChangelogFile: true
+  - include:
+      id: 2026-04-11-add-users
+      file: v-1.0/2026-04-11-add-users.yaml
+      relativeToChangelogFile: true
