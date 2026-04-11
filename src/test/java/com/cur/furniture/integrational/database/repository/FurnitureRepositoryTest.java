@@ -35,7 +35,7 @@ public class FurnitureRepositoryTest extends IntegrationalTestBase {
     @Test
     void testCreate() {
         Furniture furniture = new Furniture(testCategory, 
-            "Диван", 2000, 4000, 
+            "Диван", 3000, 2000, 4000, 
             2000, "???", null
         );
 
@@ -58,7 +58,7 @@ public class FurnitureRepositoryTest extends IntegrationalTestBase {
     @NullSource
     void testCreateWithInvalidFields(String field) {
         Furniture furniture = new Furniture(testCategory, 
-            field, 2000, 4000, 
+            field, 3000, 2000, 4000, 
             2000, field, null
         );
 

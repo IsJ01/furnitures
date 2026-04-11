@@ -10,5 +10,4 @@ public class FurnitureFilterDto {
     Integer height;
     Integer depth;
     String material;
-    String description;
 }

@@ -11,7 +11,9 @@ import com.cur.furniture.service.FurnitureService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
-
 
 @RestController
 @RequestMapping("/furnitures")
@@ -29,7 +30,10 @@ public class FurnitureController {
     private final FurnitureService furnitureService;
 
     @GetMapping
-    public PagedModel<FurnitureReadDto> findByFilter(@ModelAttribute FurnitureFilterDto filterDto, Pageable pageable) {
+    public PagedModel<FurnitureReadDto> findByFilter(
+        @ModelAttribute FurnitureFilterDto filterDto, 
+        @ParameterObject @PageableDefault(page = 0, size = 10) Pageable pageable
+    ) {
         return furnitureService.findByFilter(filterDto, pageable);
     }
 

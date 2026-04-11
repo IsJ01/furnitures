@@ -31,12 +31,39 @@ public class FurnitureService {
 
     public PagedModel<FurnitureReadDto> findByFilter(FurnitureFilterDto filterDto, Pageable page) {
         List<Specification<Furniture>> specifications = new ArrayList<>();
+
         if (filterDto.getCategoryId() != null) {
             specifications.add((root, query, cb) -> {
                 Join<Category, Furniture> join = root.join("category");
                 return cb.equal(join.get("id"), filterDto.getCategoryId());
             });
         }
+        if (filterDto.getName() != null) {
+            specifications.add((root, query, cb) -> {
+                return cb.like(root.get("name"), "%" + filterDto.getName() + "%");
+            });
+        }
+        if (filterDto.getWidth() != null) {
+            specifications.add((root, query, cb) -> {
+                return cb.greaterThan(root.get("width"), filterDto.getWidth());
+            });
+        }
+        if (filterDto.getHeight() != null) {
+            specifications.add((root, query, cb) -> {
+                return cb.greaterThan(root.get("height"), filterDto.getHeight());
+            });
+        }
+        if (filterDto.getDepth() != null) {
+            specifications.add((root, query, cb) -> {
+                return cb.greaterThan(root.get("depth"), filterDto.getDepth());
+            });
+        }
+        if (filterDto.getMaterial() != null) {
+            specifications.add((root, query, cb) -> {
+                return cb.equal(root.get("material"), filterDto.getMaterial());
+            });
+        }
+
         Page<Furniture> result = furnitureRepository.findAll(Specification.allOf(specifications), page);
         return new PagedModel<>(result.map(furnitureMapper::toReadDto));
     }

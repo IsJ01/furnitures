@@ -8,6 +8,7 @@ import lombok.Value;
 public class FurnitureCreateDto {
     @NotNull Long categoryId;
     @NotBlank String name;
+    @NotNull Integer price;
     @NotNull Integer width;
     @NotNull Integer height;
     @NotNull Integer depth;

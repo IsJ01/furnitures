@@ -39,6 +39,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: price
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
                   name: width
                   type: INT
                   constraints:
