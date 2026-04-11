@@ -45,17 +45,17 @@ public class FurnitureService {
         }
         if (filterDto.getWidth() != null) {
             specifications.add((root, query, cb) -> {
-                return cb.greaterThan(root.get("width"), filterDto.getWidth());
+                return cb.greaterThanOrEqualTo(root.get("width"), filterDto.getWidth());
             });
         }
         if (filterDto.getHeight() != null) {
             specifications.add((root, query, cb) -> {
-                return cb.greaterThan(root.get("height"), filterDto.getHeight());
+                return cb.greaterThanOrEqualTo(root.get("height"), filterDto.getHeight());
             });
         }
         if (filterDto.getDepth() != null) {
             specifications.add((root, query, cb) -> {
-                return cb.greaterThan(root.get("depth"), filterDto.getDepth());
+                return cb.greaterThanOrEqualTo(root.get("depth"), filterDto.getDepth());
             });
         }
         if (filterDto.getMaterial() != null) {
