@@ -1,5 +1,6 @@
 package com.cur.furniture.database.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -24,13 +25,18 @@ public class Category extends BaseEntity {
     private Category parent;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
-    private List<Category> children;
+    private List<Category> children = new ArrayList<>();
 
     private String name;
 
     public Category(Category parent, String name) {
         this.parent = parent;
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Category(name=%s, children=%s)", name, children.toString());
     }
 
 }
