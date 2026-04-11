@@ -6,6 +6,7 @@ import lombok.Value;
 public class FurnitureFilterDto {
     Long categoryId;
     String name;
+    Integer price;
     Integer width;
     Integer height;
     Integer depth;

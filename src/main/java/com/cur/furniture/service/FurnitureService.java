@@ -43,6 +43,11 @@ public class FurnitureService {
                 return cb.like(root.get("name"), "%" + filterDto.getName() + "%");
             });
         }
+        if (filterDto.getPrice() != null) {
+            specifications.add((root, query, cb) -> {
+                return cb.lessThanOrEqualTo(root.get("price"), filterDto.getPrice());
+            });
+        }
         if (filterDto.getWidth() != null) {
             specifications.add((root, query, cb) -> {
                 return cb.greaterThanOrEqualTo(root.get("width"), filterDto.getWidth());
