@@ -27,7 +27,7 @@ public class JwtServiceTest extends IntegrationalTestBase {
 
     @Test
     void testCreate() {
-        String token = jwtService.generateKey(new User("Test user", null, Role.CONSULTANT));
+        String token = jwtService.generateToken(new User("Test user", null, Role.CONSULTANT));
         assertThat(jwtService.extractUsername(token)).isEqualTo("Test user");
         assertThat(jwtService.extractRole(token)).isEqualTo(Role.CONSULTANT);
         assertThat(jwtService.validateToken(token)).isTrue();

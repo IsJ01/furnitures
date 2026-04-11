@@ -20,7 +20,7 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public String generateKey(User user) {
+    public String generateToken(User user) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + 1000 * 60 * 6);
         return Jwts.builder()
