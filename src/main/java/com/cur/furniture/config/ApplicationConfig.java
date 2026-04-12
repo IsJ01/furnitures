@@ -51,8 +51,8 @@ public class ApplicationConfig {
                 .requestMatchers("/auth/sign-in").permitAll()
                 .requestMatchers("/categories").permitAll()
                 .requestMatchers("/deals").permitAll()
-                .requestMatchers(HttpMethod.POST, "/questions").permitAll()
-                .requestMatchers(HttpMethod.GET, "/answers").permitAll()
+                .requestMatchers("/questions/answers").authenticated()
+                .requestMatchers("/questions/**").permitAll()
                 .anyRequest().authenticated()
             )
             .build();

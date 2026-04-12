@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cur.furniture.dto.AnswerCreateDto;
 import com.cur.furniture.dto.QuestionCreateDto;
 import com.cur.furniture.dto.QuestionReadDto;
+import com.cur.furniture.service.AnswerService;
 import com.cur.furniture.service.QuestionService;
 
 import jakarta.validation.Valid;
@@ -26,13 +28,14 @@ import lombok.RequiredArgsConstructor;
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final AnswerService answerService;
 
     @GetMapping
     public PagedModel<QuestionReadDto> findByPage(@ParameterObject @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return questionService.findByPage(pageable);
     }
 
-    @GetMapping("/{id")
+    @GetMapping("/{id}")
     public QuestionReadDto findById(@RequestParam Long id) {
         return questionService.findById(id);
     }
@@ -40,6 +43,12 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid QuestionCreateDto createDto) {
         questionService.create(createDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/answers")
+    public ResponseEntity<?> createAnswer(@RequestBody @Valid AnswerCreateDto createDto) {
+        answerService.create(createDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     

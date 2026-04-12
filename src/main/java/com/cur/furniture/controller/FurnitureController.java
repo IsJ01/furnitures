@@ -1,6 +1,7 @@
 package com.cur.furniture.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cur.furniture.dto.FurnitureCreateDto;
@@ -35,6 +36,11 @@ public class FurnitureController {
         @ParameterObject @PageableDefault(page = 0, size = 10) Pageable pageable
     ) {
         return furnitureService.findByFilter(filterDto, pageable);
+    }
+
+    @GetMapping("/{id}")
+    public FurnitureReadDto findById(@RequestParam Long id) {
+        return furnitureService.findById(id);
     }
 
     @PostMapping

@@ -9,7 +9,7 @@ import com.cur.furniture.database.entity.Question;
 import com.cur.furniture.database.repository.QuestionRepository;
 import com.cur.furniture.dto.QuestionCreateDto;
 import com.cur.furniture.dto.QuestionReadDto;
-import com.cur.furniture.exception.DealNotFoundException;
+import com.cur.furniture.exception.QuestionNotFoundException;
 import com.cur.furniture.mapper.QuestionMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class QuestionService {
     public QuestionReadDto findById(Long id) {
         return questionRepository.findById(id)
             .map(questionMapper::toReadDto)
-            .orElseThrow(() -> new DealNotFoundException("Question not found: " + id));
+            .orElseThrow(() -> new QuestionNotFoundException("Question not found: " + id));
     }
 
 }

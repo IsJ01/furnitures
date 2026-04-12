@@ -33,7 +33,7 @@ public class DealController {
         return dealService.findByPage(pageable);
     }
 
-    @GetMapping("/{id")
+    @GetMapping("/{id}")
     public DealReadDto findById(@RequestParam Long id) {
         return dealService.findById(id);
     }
