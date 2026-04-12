@@ -10,22 +10,25 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.cur.furniture.database.entity.User;
 import com.cur.furniture.dto.SignInDto;
 import com.cur.furniture.dto.SignUpDto;
 import com.cur.furniture.integrational.IntegrationalTestBase;
+import com.cur.furniture.service.JwtService;
+import com.cur.furniture.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @AutoConfigureMockMvc
 public class AuthControllerTest extends IntegrationalTestBase {
 
-    @Value("${admin.name}")
-    private String adminName;
-
-    @Value("${admin.password}")
-    private String adminPassword;
-
+    @Value("${admin.name}") private String adminName;
+    @Value("${admin.password}") private String adminPassword;
+    
+    @Autowired private JwtService jwtService;
     @Autowired private MockMvc mockMvc;
+    @Autowired private UserService userService;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -34,6 +37,9 @@ public class AuthControllerTest extends IntegrationalTestBase {
         mockMvc.perform(post("/auth/sign-up")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(signUpDto))
+            .header("Authorization", "Bearer " + jwtService.generateToken(
+                (User) userService.loadUserByUsername(adminName)
+            ))
         ).andExpect(status().isCreated());
     }
 

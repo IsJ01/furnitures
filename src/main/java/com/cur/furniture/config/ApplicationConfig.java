@@ -45,10 +45,11 @@ public class ApplicationConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/categories").permitAll()
-                .requestMatchers(HttpMethod.POST, "/furnitures").authenticated()
                 .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
+                .requestMatchers("/auth/sign-up").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/furnitures").authenticated()
+                .requestMatchers("/auth/sign-in").permitAll()
+                .requestMatchers("/categories").permitAll()
                 .anyRequest().authenticated()
             )
             .build();

@@ -44,7 +44,7 @@ public class User extends BaseEntity implements UserDetails {
         CONSULTANT;
 
         public GrantedAuthority toAuthority() {
-            return new SimpleGrantedAuthority(name());
+            return new SimpleGrantedAuthority("ROLE_" + name());
         }
 
     }
