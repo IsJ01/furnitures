@@ -16,6 +16,7 @@ import com.cur.furniture.database.repository.FurnitureRepository;
 import com.cur.furniture.dto.FurnitureCreateDto;
 import com.cur.furniture.dto.FurnitureFilterDto;
 import com.cur.furniture.dto.FurnitureReadDto;
+import com.cur.furniture.exception.FurnitureNotFoundException;
 import com.cur.furniture.mapper.FurnitureMapper;
 
 import jakarta.persistence.criteria.Join;
@@ -73,6 +74,11 @@ public class FurnitureService {
         return new PagedModel<>(result.map(furnitureMapper::toReadDto));
     }
 
+    public FurnitureReadDto findById(Long id) {
+        return furnitureRepository.findById(id)
+            .map(furnitureMapper::toReadDto)
+            .orElseThrow(() -> new FurnitureNotFoundException("Firniture not found: " + id));
+    }
     @Transactional
     public void create(FurnitureCreateDto createDto) {
         Furniture furniture = furnitureMapper.toEntity(createDto);

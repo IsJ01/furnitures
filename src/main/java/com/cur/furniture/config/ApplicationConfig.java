@@ -50,6 +50,7 @@ public class ApplicationConfig {
                 .requestMatchers(HttpMethod.GET, "/furnitures").permitAll()
                 .requestMatchers("/auth/sign-in").permitAll()
                 .requestMatchers("/categories").permitAll()
+                .requestMatchers("/deals").permitAll()
                 .requestMatchers(HttpMethod.POST, "/questions").permitAll()
                 .requestMatchers(HttpMethod.GET, "/answers").permitAll()
                 .anyRequest().authenticated()
