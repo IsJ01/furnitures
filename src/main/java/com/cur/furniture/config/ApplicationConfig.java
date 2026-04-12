@@ -47,7 +47,7 @@ public class ApplicationConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/categories").permitAll()
-                .requestMatchers(HttpMethod.POST, "/furnitures").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/furnitures").authenticated()
                 .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated()
             )
