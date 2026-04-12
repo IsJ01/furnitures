@@ -1,6 +1,5 @@
 package com.cur.furniture.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mapstruct.AfterMapping;
@@ -15,26 +14,36 @@ import com.cur.furniture.database.entity.DealFurniture;
 import com.cur.furniture.database.repository.FurnitureRepository;
 import com.cur.furniture.dto.DealCreateDto;
 import com.cur.furniture.dto.DealFurnitureCreateDto;
+import com.cur.furniture.dto.DealReadDto;
+import com.cur.furniture.dto.FurnitureReadDto;
 
 @Mapper(componentModel = "spring")
 public abstract class DealMapper {
 
     @Autowired private FurnitureRepository furnitureRepository;
+    @Autowired private FurnitureMapper furnitureMapper;
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dealFurnitures", source = "dealFurnitures", qualifiedByName="mapDealFurnitures")
     public abstract Deal toEntity(DealCreateDto createDto);
 
+    @Mapping(target = "content", source = "dealFurnitures", qualifiedByName="mapFurnitures")
+    public abstract DealReadDto toReadDto(Deal deal);
+
+    @Named("mapFurnitures")
+    protected List<FurnitureReadDto> mapFurnitures(List<DealFurniture> dealFurnitures) {
+        return dealFurnitures.stream()
+            .map(df -> furnitureMapper.toReadDto(df.getFurniture()))
+            .toList();
+    }
+
     @Named("mapDealFurnitures")
     protected List<DealFurniture> mapDealFurnitures(List<DealFurnitureCreateDto> dealFurnitures) {
-        List<DealFurniture> enities = new ArrayList<>();
-        for (DealFurnitureCreateDto createDto: dealFurnitures) {
-            DealFurniture entity = new DealFurniture(
-                furnitureRepository.getReferenceById(createDto.getFurnitureId())
-            );
-            enities.add(entity);
-        }
-        return enities;
+        return dealFurnitures.stream()
+            .map(dto -> dto.getFurnitureId())
+            .map(id -> furnitureRepository.getReferenceById(id))
+            .map(ft -> new DealFurniture(ft))
+            .toList();
     }
 
     @AfterMapping

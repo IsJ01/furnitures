@@ -8,5 +8,5 @@ import lombok.Value;
 public class DealReadDto {
     Long id;
     String phone;
-    List<FurnitureReadDto> dealFurnitures;
+    List<FurnitureReadDto> content;
 }
