@@ -47,9 +47,11 @@ public class ApplicationConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
                 .requestMatchers("/auth/sign-up").hasRole(Role.ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/furnitures").authenticated()
+                .requestMatchers(HttpMethod.GET, "/furnitures").permitAll()
                 .requestMatchers("/auth/sign-in").permitAll()
                 .requestMatchers("/categories").permitAll()
+                .requestMatchers(HttpMethod.POST, "/questions").permitAll()
+                .requestMatchers(HttpMethod.GET, "/answers").permitAll()
                 .anyRequest().authenticated()
             )
             .build();

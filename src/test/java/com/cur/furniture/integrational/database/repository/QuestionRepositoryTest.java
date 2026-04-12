@@ -25,6 +25,7 @@ public class QuestionRepositoryTest extends IntegrationalTestBase {
         questionRepository.saveAndFlush(question);
         assertThat(question.getPhone()).isEqualTo("79999999999");
         assertThat(question.getText()).isEqualTo("?");
+        assertThat(question.isClosed()).isFalse();
     }
 
 }

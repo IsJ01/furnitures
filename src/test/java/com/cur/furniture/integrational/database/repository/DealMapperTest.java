@@ -10,23 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cur.furniture.database.entity.Category;
 import com.cur.furniture.database.entity.Deal;
-import com.cur.furniture.database.entity.DealFurniture;
 import com.cur.furniture.database.entity.Furniture;
 import com.cur.furniture.database.repository.CategoryRepository;
 import com.cur.furniture.database.repository.DealFurnitureRepository;
 import com.cur.furniture.database.repository.DealRepository;
 import com.cur.furniture.database.repository.FurnitureRepository;
+import com.cur.furniture.dto.DealCreateDto;
+import com.cur.furniture.dto.DealFurnitureCreateDto;
 import com.cur.furniture.integrational.IntegrationalTestBase;
+import com.cur.furniture.mapper.DealMapper;
 
-public class DealFurnitureRepositoryTest extends IntegrationalTestBase {
+public class DealMapperTest extends IntegrationalTestBase {
 
+    @Autowired private DealMapper dealMapper;
     @Autowired private DealRepository dealRepository;
     @Autowired private CategoryRepository categoryRepository;
     @Autowired private FurnitureRepository furnitureRepository;
     @Autowired private DealFurnitureRepository dealFurnitureRepository;
 
     private Category testCategory;
-    private Deal testDeal;
     private Furniture testFurniture;
 
     @BeforeEach
@@ -39,9 +41,6 @@ public class DealFurnitureRepositoryTest extends IntegrationalTestBase {
         testCategory = new Category(null, "Test category");
         categoryRepository.saveAndFlush(testCategory);
 
-        testDeal = new Deal("79999999999");
-        dealRepository.saveAndFlush(testDeal);
-
         testFurniture = new Furniture(testCategory, 
             "Диван", 3000, 2000, 4000, 
             2000, "???", null
@@ -51,19 +50,14 @@ public class DealFurnitureRepositoryTest extends IntegrationalTestBase {
 
     @Test
     void testCreateFromDeal() {
-        Deal testDeal2 = new Deal("79999999999");
+        DealCreateDto createDto = new DealCreateDto("79999999999", 
+            List.of(new DealFurnitureCreateDto(testFurniture.getId()), new DealFurnitureCreateDto(testFurniture.getId()))
+        );
 
-        DealFurniture df = new DealFurniture(testFurniture);
-        df.setDeal(testDeal2);
-        DealFurniture df2 = new DealFurniture(testFurniture);
-        df2.setDeal(testDeal2);
-        DealFurniture df3 = new DealFurniture(testFurniture);
-        df3.setDeal(testDeal2);
+        Deal deal = dealMapper.toEntity(createDto);
 
-        testDeal2.setDealFurnitures(List.of(df, df2, df3));
-        dealRepository.save(testDeal2);
+        dealRepository.saveAndFlush(deal);
 
-        assertThat(testDeal2.getDealFurnitures()).hasSize(3)
-            .contains(df, df2, df3);
+        assertThat(deal.getDealFurnitures()).hasSize(2);
     }
 }
