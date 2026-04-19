@@ -1,5 +1,5 @@
 services:
-  app:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,6 +16,9 @@ services:
       ADMIN_NAME: ${ADMIN_NAME}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
+      STORE_NAME: ${STORE_NAME}
+      STORE_PHONE: ${STORE_PHONE}
+      STORE_ADDRESS: ${STORE_ADDRESS}
     depends_on:
       - db
     networks:

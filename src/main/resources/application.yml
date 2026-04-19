@@ -35,3 +35,8 @@ admin:
   name: ${ADMIN_NAME}
   password: ${ADMIN_PASSWORD}
 
+store:
+  name: ${STORE_NAME}
+  phone: ${STORE_PHONE}
+  address: ${STORE_ADDRESS}
+

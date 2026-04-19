@@ -1,5 +1,6 @@
 package com.cur.furniture.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cur.furniture.database.entity.Category;
 import com.cur.furniture.database.entity.Furniture;
 import com.cur.furniture.database.repository.FurnitureRepository;
 import com.cur.furniture.dto.FurnitureCreateDto;
 import com.cur.furniture.dto.FurnitureFilterDto;
+import com.cur.furniture.dto.FurniturePatchDto;
 import com.cur.furniture.dto.FurnitureReadDto;
+import com.cur.furniture.dto.FurnitureUpdateDto;
 import com.cur.furniture.exception.FurnitureNotFoundException;
 import com.cur.furniture.mapper.FurnitureMapper;
 
@@ -29,6 +33,8 @@ public class FurnitureService {
 
     private final FurnitureRepository furnitureRepository;
     private final FurnitureMapper furnitureMapper;
+
+    private final ImageService imageService;
 
     public PagedModel<FurnitureReadDto> findByFilter(FurnitureFilterDto filterDto, Pageable page) {
         List<Specification<Furniture>> specifications = new ArrayList<>();
@@ -77,12 +83,40 @@ public class FurnitureService {
     public FurnitureReadDto findById(Long id) {
         return furnitureRepository.findById(id)
             .map(furnitureMapper::toReadDto)
-            .orElseThrow(() -> new FurnitureNotFoundException("Firniture not found: " + id));
+            .orElseThrow(() -> new FurnitureNotFoundException(id));
     }
+
     @Transactional
-    public void create(FurnitureCreateDto createDto) {
+    public void create(FurnitureCreateDto createDto) throws IOException {
         Furniture furniture = furnitureMapper.toEntity(createDto);
         furnitureRepository.save(furniture);
+    }
+
+    @Transactional
+    public void update(Long id, FurnitureUpdateDto updateDto) throws IOException {
+        Furniture furniture = furnitureRepository.findById(id)
+            .orElseThrow(() -> new FurnitureNotFoundException(id));
+        furnitureMapper.update(furniture, updateDto);
+        furnitureRepository.saveAndFlush(furniture);
+        if (updateDto.getImage() != null) {
+            furniture.setImage(imageService.saveImage(furniture.getId(), updateDto.getImage()));
+        }
+    }
+
+    @Transactional
+    public void update(Long id, FurniturePatchDto updateDto) throws IOException {
+        Furniture furniture = furnitureRepository.findById(id)
+            .orElseThrow(() -> new FurnitureNotFoundException(id));
+        furnitureMapper.update(furniture, updateDto);
+        furnitureRepository.saveAndFlush(furniture);
+    }
+
+    @Transactional
+    public void updateImage(Long id, MultipartFile image) throws IOException {
+        Furniture furniture = furnitureRepository.findById(id)
+            .orElseThrow(() -> new FurnitureNotFoundException(id));
+        furniture.setImage(imageService.saveImage(furniture.getId(), image));
+        furnitureRepository.saveAndFlush(furniture);
     }
 
 }

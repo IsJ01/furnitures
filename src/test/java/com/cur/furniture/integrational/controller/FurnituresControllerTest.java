@@ -1,5 +1,7 @@
 package com.cur.furniture.integrational.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,7 +21,8 @@ import com.cur.furniture.integrational.IntegrationalTestBase;
 import com.cur.furniture.service.JwtService;
 import com.cur.furniture.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import tools.jackson.databind.ObjectMapper;
 
 public class FurnituresControllerTest extends IntegrationalTestBase {
 
@@ -31,7 +34,6 @@ public class FurnituresControllerTest extends IntegrationalTestBase {
     @Autowired protected WebApplicationContext context;
 
     private MockMvc mockMvc;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
@@ -44,13 +46,14 @@ public class FurnituresControllerTest extends IntegrationalTestBase {
     @Test
     void testCreate() throws JsonProcessingException, Exception {
         FurnitureCreateDto createDto = new FurnitureCreateDto(
-            13l, "a", 1, 
-            1, 1, 1, 
+            13l, "name", 
+            1, 1, 
+            1, 1, 
             "b", null
         );
         mockMvc.perform(post("/furnitures")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(createDto))
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(new ObjectMapper().writeValueAsString(createDto))
             .header("Authorization", "Bearer " + jwtService.generateToken(
                 (User) userService.loadUserByUsername(adminName)
             ))
@@ -58,8 +61,19 @@ public class FurnituresControllerTest extends IntegrationalTestBase {
     }
 
     @Test
+    void testPatch() throws JsonProcessingException, Exception {
+        mockMvc.perform(patch("/furnitures/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .param("name", "b")
+            .header("Authorization", "Bearer " + jwtService.generateToken(
+                (User) userService.loadUserByUsername(adminName)
+            ))
+        );
+    }
+
+    @Test
     void testCreateShouldForbidden() throws JsonProcessingException, Exception {
-        mockMvc.perform(post("/furnitures")
+        mockMvc.perform(multipart("/furnitures")
             .contentType(MediaType.APPLICATION_JSON)
             .content("")
         ).andExpect(status().isForbidden());
@@ -68,14 +82,8 @@ public class FurnituresControllerTest extends IntegrationalTestBase {
 
     @Test
     void testCreateShouldFailed() throws JsonProcessingException, Exception {
-        FurnitureCreateDto createDto = new FurnitureCreateDto(
-            null, null, null, 
-            null, null, null, 
-            null, null
-        );
-        mockMvc.perform(post("/furnitures")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(createDto))
+        mockMvc.perform(multipart("/furnitures")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
             .header("Authorization", "Bearer " + jwtService.generateToken(
                 (User) userService.loadUserByUsername(adminName)
             ))

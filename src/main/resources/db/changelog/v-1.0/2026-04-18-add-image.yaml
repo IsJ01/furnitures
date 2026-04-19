@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 11_add_image
+      author: "Safi"
+      changes:
+        - addColumn:
+            tableName: furnitures
+            columns:
+              - column:
+                  name: image
+                  type: TEXT

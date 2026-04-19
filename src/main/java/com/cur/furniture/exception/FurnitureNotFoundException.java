@@ -6,4 +6,8 @@ public class FurnitureNotFoundException extends RuntimeException {
         super(message);
     }
 
+    public FurnitureNotFoundException(Long id) {
+        super("Furniture not found: " + id);
+    }
+
 }

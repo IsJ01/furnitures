@@ -42,7 +42,7 @@ public class DealMapperTest extends IntegrationalTestBase {
         categoryRepository.saveAndFlush(testCategory);
 
         testFurniture = new Furniture(testCategory, 
-            "Диван", 3000, 2000, 4000, 
+            "Диван", null, 3000, 2000, 4000, 
             2000, "???", null
         );
         furnitureRepository.saveAndFlush(testFurniture);

@@ -24,6 +24,8 @@ public class Furniture extends BaseEntity {
 
     private String name;
 
+    private String image;
+
     private Integer price;
 
     private Integer width;

@@ -7,6 +7,7 @@ public class FurnitureReadDto {
     Long id;
     Long categoryId;
     String name;
+    String image;
     Integer price;
     Integer width;
     Integer height;

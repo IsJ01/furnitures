@@ -19,3 +19,7 @@ databaseChangeLog:
       id: 2026-04-12-add-questions
       file: v-1.0/2026-04-12-add-questions.yaml
       relativeToChangelogFile: true
+  - include:
+      id: 2026-04-18-add-image
+      file: v-1.0/2026-04-18-add-image.yaml
+      relativeToChangelogFile: true

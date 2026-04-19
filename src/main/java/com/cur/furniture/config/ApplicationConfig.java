@@ -16,7 +16,6 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import com.cur.furniture.database.entity.User.Role;
 import com.cur.furniture.filter.JwtFilter;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -46,9 +45,12 @@ public class ApplicationConfig {
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/api-docs/**").permitAll()
                 .requestMatchers("/auth/sign-up").hasRole(Role.ADMIN.name())
                 .requestMatchers(HttpMethod.GET, "/furnitures").permitAll()
+                .requestMatchers(HttpMethod.GET, "/furnitures/**").permitAll()
                 .requestMatchers("/auth/sign-in").permitAll()
+                .requestMatchers("/store/**").permitAll()
                 .requestMatchers("/categories").permitAll()
                 .requestMatchers("/deals").permitAll()
                 .requestMatchers("/questions/answers").authenticated()
