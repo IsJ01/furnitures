@@ -2,8 +2,6 @@ package com.cur.furniture.integrational.database.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,15 +53,10 @@ public class DealFurnitureRepositoryTest extends IntegrationalTestBase {
 
         DealFurniture df = new DealFurniture(testFurniture);
         df.setDeal(testDeal2);
-        DealFurniture df2 = new DealFurniture(testFurniture);
-        df2.setDeal(testDeal2);
-        DealFurniture df3 = new DealFurniture(testFurniture);
-        df3.setDeal(testDeal2);
 
-        testDeal2.setDealFurnitures(List.of(df, df2, df3));
+        testDeal2.setDealFurniture(df);
         dealRepository.save(testDeal2);
 
-        assertThat(testDeal2.getDealFurnitures()).hasSize(3)
-            .contains(df, df2, df3);
+        assertThat(testDeal2.getDealFurniture()).isEqualTo(df);
     }
 }

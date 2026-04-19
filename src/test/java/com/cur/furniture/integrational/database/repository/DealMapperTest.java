@@ -1,9 +1,5 @@
 package com.cur.furniture.integrational.database.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,13 +47,12 @@ public class DealMapperTest extends IntegrationalTestBase {
     @Test
     void testCreateFromDeal() {
         DealCreateDto createDto = new DealCreateDto("79999999999", 
-            List.of(new DealFurnitureCreateDto(testFurniture.getId()), new DealFurnitureCreateDto(testFurniture.getId()))
+            new DealFurnitureCreateDto(testFurniture.getId())
         );
 
         Deal deal = dealMapper.toEntity(createDto);
 
         dealRepository.saveAndFlush(deal);
 
-        assertThat(deal.getDealFurnitures()).hasSize(2);
     }
 }

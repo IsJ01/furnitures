@@ -22,7 +22,7 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.ok()
-            .body(categoryService.findAll());
+            .body(categoryService.findById(id));
     }
 
     @GetMapping

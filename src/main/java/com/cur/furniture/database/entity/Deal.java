@@ -1,12 +1,9 @@
 package com.cur.furniture.database.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +21,8 @@ public class Deal extends BaseEntity {
 
     private String phone;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "deal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DealFurniture> dealFurnitures = new ArrayList<>();
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "deal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private DealFurniture dealFurniture;
 
     public Deal(String phone) {
         this.phone = phone;

@@ -1,6 +1,6 @@
 package com.cur.furniture.mapper;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -24,33 +24,31 @@ public abstract class DealMapper {
     @Autowired private FurnitureMapper furnitureMapper;
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "dealFurnitures", source = "dealFurnitures", qualifiedByName="mapDealFurnitures")
+    @Mapping(target = "dealFurniture", source = "dealFurniture", qualifiedByName="mapDealFurniture")
     public abstract Deal toEntity(DealCreateDto createDto);
 
-    @Mapping(target = "content", source = "dealFurnitures", qualifiedByName="mapFurnitures")
+    @Mapping(target = "content", source = "dealFurniture", qualifiedByName="mapFurniture")
     public abstract DealReadDto toReadDto(Deal deal);
 
-    @Named("mapFurnitures")
-    protected List<FurnitureReadDto> mapFurnitures(List<DealFurniture> dealFurnitures) {
-        return dealFurnitures.stream()
+    @Named("mapFurniture")
+    protected FurnitureReadDto mapFurnitures(DealFurniture dealFurnitures) {
+        return Optional.of(dealFurnitures)
             .map(df -> furnitureMapper.toReadDto(df.getFurniture()))
-            .toList();
+            .get();
     }
 
-    @Named("mapDealFurnitures")
-    protected List<DealFurniture> mapDealFurnitures(List<DealFurnitureCreateDto> dealFurnitures) {
-        return dealFurnitures.stream()
+    @Named("mapDealFurniture")
+    protected DealFurniture mapDealFurniture(DealFurnitureCreateDto dealFurniture) {
+        return Optional.of(dealFurniture)
             .map(dto -> dto.getFurnitureId())
             .map(id -> furnitureRepository.getReferenceById(id))
             .map(ft -> new DealFurniture(ft))
-            .toList();
+            .get();
     }
 
     @AfterMapping
     protected void links(@MappingTarget Deal deal) {
-        for (DealFurniture df: deal.getDealFurnitures()) {
-            df.setDeal(deal);
-        }
+        deal.getDealFurniture().setDeal(deal);
     }
 
 

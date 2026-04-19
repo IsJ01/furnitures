@@ -51,7 +51,7 @@ public class ApplicationConfig {
                 .requestMatchers(HttpMethod.GET, "/furnitures/**").permitAll()
                 .requestMatchers("/auth/sign-in").permitAll()
                 .requestMatchers("/store/**").permitAll()
-                .requestMatchers("/categories").permitAll()
+                .requestMatchers("/categories/**").permitAll()
                 .requestMatchers("/deals").permitAll()
                 .requestMatchers("/questions/answers").authenticated()
                 .requestMatchers("/questions/**").permitAll()
