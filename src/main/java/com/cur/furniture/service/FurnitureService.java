@@ -41,7 +41,7 @@ public class FurnitureService {
 
         if (filterDto.getCategoryId() != null) {
             specifications.add((root, query, cb) -> {
-                Join<Category, Furniture> join = root.join("category");
+                Join<Furniture, Category> join = root.join("category");
                 return cb.equal(join.get("id"), filterDto.getCategoryId());
             });
         }
@@ -72,7 +72,7 @@ public class FurnitureService {
         }
         if (filterDto.getMaterial() != null) {
             specifications.add((root, query, cb) -> {
-                return cb.equal(root.get("material"), filterDto.getMaterial());
+                return cb.like(root.get("material"), "%" + filterDto.getMaterial() + "%");
             });
         }
 

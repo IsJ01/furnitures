@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.cur.furniture.exception.CategoryNotFoundException;
 import com.cur.furniture.exception.FurnitureNotFoundException;
 import com.cur.furniture.exception.UserAlreadyExistsException;
 
@@ -20,7 +21,20 @@ import com.cur.furniture.exception.UserAlreadyExistsException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(FurnitureNotFoundException.class)
-    public ResponseEntity<?> handleUsernameNotFound(FurnitureNotFoundException ex) {
+    public ResponseEntity<?> handleNotFound(FurnitureNotFoundException ex) {
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND) // 404
+            .body(Map.of(
+                "timestamp", Instant.now().toString(),
+                "status", 404,
+                "error", "Not Found",
+                "message", ex.getMessage(),
+                "code", "NOT_FOUND"
+            ));
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<?> handleNotFound(CategoryNotFoundException ex) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND) // 404
             .body(Map.of(
