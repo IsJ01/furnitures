@@ -23,7 +23,7 @@ public abstract class AnswerMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "question", source = "questionId", qualifiedByName = "mapQuestion")
-    @Mapping(target = "consultant", source = "consultantId", qualifiedByName = "mapConsultant")
+    @Mapping(target = "consultant", ignore = true)
     public abstract Answer toEntity(AnswerCreateDto createDto);
     
     @Mapping(target = "consultant", source = "consultant", qualifiedByName = "mapReadConsultant")

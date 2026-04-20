@@ -8,11 +8,9 @@ import com.cur.furniture.database.entity.Category;
 import com.cur.furniture.database.entity.Deal;
 import com.cur.furniture.database.entity.Furniture;
 import com.cur.furniture.database.repository.CategoryRepository;
-import com.cur.furniture.database.repository.DealFurnitureRepository;
 import com.cur.furniture.database.repository.DealRepository;
 import com.cur.furniture.database.repository.FurnitureRepository;
 import com.cur.furniture.dto.DealCreateDto;
-import com.cur.furniture.dto.DealFurnitureCreateDto;
 import com.cur.furniture.integrational.IntegrationalTestBase;
 import com.cur.furniture.mapper.DealMapper;
 
@@ -22,7 +20,6 @@ public class DealMapperTest extends IntegrationalTestBase {
     @Autowired private DealRepository dealRepository;
     @Autowired private CategoryRepository categoryRepository;
     @Autowired private FurnitureRepository furnitureRepository;
-    @Autowired private DealFurnitureRepository dealFurnitureRepository;
 
     private Category testCategory;
     private Furniture testFurniture;
@@ -31,7 +28,6 @@ public class DealMapperTest extends IntegrationalTestBase {
     void setUp() {
         furnitureRepository.deleteAll();
         dealRepository.deleteAll();
-        dealFurnitureRepository.deleteAll();
         categoryRepository.deleteAll();
         
         testCategory = new Category(null, "Test category");
@@ -46,9 +42,7 @@ public class DealMapperTest extends IntegrationalTestBase {
 
     @Test
     void testCreateFromDeal() {
-        DealCreateDto createDto = new DealCreateDto("79999999999", 
-            new DealFurnitureCreateDto(testFurniture.getId())
-        );
+        DealCreateDto createDto = new DealCreateDto("79999999999", testFurniture.getId());
 
         Deal deal = dealMapper.toEntity(createDto);
 

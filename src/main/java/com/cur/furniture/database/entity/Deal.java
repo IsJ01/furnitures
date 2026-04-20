@@ -1,8 +1,8 @@
 package com.cur.furniture.database.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -21,11 +21,8 @@ public class Deal extends BaseEntity {
 
     private String phone;
 
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "deal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private DealFurniture dealFurniture;
-
-    public Deal(String phone) {
-        this.phone = phone;
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "furniture_id")
+    private Furniture furniture;
 
 }

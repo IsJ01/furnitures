@@ -4,6 +4,7 @@ import lombok.Value;
 
 @Value
 public class QuestionReadDto {
+    Long id;
     String phone;
     String text;
     AnswerReadDto answer;

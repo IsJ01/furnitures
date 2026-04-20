@@ -23,3 +23,7 @@ databaseChangeLog:
       id: 2026-04-18-add-image
       file: v-1.0/2026-04-18-add-image.yaml
       relativeToChangelogFile: true
+  - include:
+      id: 2026-04-19-update-deals
+      file: v-1.0/2026-04-19-update-deals.yaml
+      relativeToChangelogFile: true

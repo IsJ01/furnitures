@@ -23,9 +23,10 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
 
     @Transactional
-    public void create(QuestionCreateDto createDto) {
+    public QuestionReadDto create(QuestionCreateDto createDto) {
         Question question = questionMapper.toEntity(createDto);
         questionRepository.save(question);
+        return questionMapper.toReadDto(question);
     }
 
     public PagedModel<QuestionReadDto> findByPage(Pageable pageable) {
